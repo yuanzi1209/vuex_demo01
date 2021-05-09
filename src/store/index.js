@@ -5,34 +5,42 @@ Vue.use(Vuex)
 
 /**
  * state 数据源
- * mutations 变更数据
+ * mutations 变更数据（同步、唯一变更数据的地方）
  * actions 处理异步任务
  * getters 拷贝state中的数据 => 新数据（响应式）
  */
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
-    count: 0
+    count: 0,
+    list: [1, 3, 5, 7, 9]
   },
   mutations: {
-    // add(state) {
-    //   state.count ++
-    // },
-    // sub(state) {
-    //   state.count--
-    // }
+    add(state, p) {
+      state.count += p
+    },
+    sub(state, pp) {
+      state.count -= pp
+    }
   },
   actions: {
-    // addAsync(context) {
-    //   setTimeout(() => {
-    //     context.commit('add')
-    //   }, 1000)
-    // }
+    addAsync({ commit }, p) {
+      setTimeout(() => {
+        commit('add', p)
+      }, 1000)
+    },
+    subAsync({ commit }, pp) {
+      setTimeout(() => {
+        commit('sub', pp)
+      }, 3000)
+    }
   },
-  getters:{
-    showCount: state => {
-      return state.count+=8
+  getters: {
+    filterList(state) {
+      return state.list.filter(item => item > 5)
     }
   },
   modules: {
   }
 })
+
+export default store
